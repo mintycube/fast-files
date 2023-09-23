@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+
+#-----------------------------------------------------------------------------
+#                       █▀▀ ▄▀█ █▀ ▀█▀ █▀▀ █ █   █▀▀ █▀
+#                       █▀  █▀█ ▄█  █  █▀  █ █▄▄ ██▄ ▄█
+#
+# Usage:        ff [path file or folder]
+#
+# Description:  Bash script which is a combination of 'mkdir' and 'touch'.
+#               It can create directory structures and files simultaneously
+#               and lists the created objects using eza, lsd, or ls.
+#
+# Dependencies: bash
+#               eza (optional)
+#               lsd (optional)
+#
+# Examples:     - Single file:
+#                   ff file
+#               - Single directory:
+#                   ff dir/
+#               - Multiple files:
+#                   ff file1 file2 file3
+#               - Multiple directories:
+#                   ff dir1/ dir2/ dir3/
+#               - File in a directory
+#                   ff dir/file
+#               - Directory in a directory
+#                   ff dir1/dir2/
+#               - Multiple files in multiple directories
+#                   ff dir1/dir2/file1 dir3/file2
+#               - If your shell supprts brace expansion e.g bash, zsh, fish
+#                   ff dir1/{dir2/{file1,file2}.txt,dir3/file3.txt}
+#-----------------------------------------------------------------------------
+
+# Gets the created files and folder names and prints them
+listObjects() {
+	unique_names=()
+
+	for arg in "$@"; do
+		name="${arg%%/*}"
+		if [ -n "$name" ]; then
+			if [[ ! " ${unique_names[*]} " =~ $name ]]; then
+				unique_names+=("$name")
+			fi
+		fi
+	done
+	if command -v eza &>/dev/null; then
+		eza -aU --no-user --no-filesize --no-permissions --tree --icons \
+			--group-directories-first "${unique_names[@]}"
+	elif command -v lsd &>/dev/null; then
+		lsd -al --tree --icon=always --group-directories-first "${unique_names[@]}"
+	else
+		ls -ARl --color=always "${unique_names[@]}"
+	fi
+}
+
+# Function to create directory structures and files
+createObjects() {
+	for path in "$@"; do
+		if [[ "$path" == */ ]]; then
+			mkdir -p "$path"
+		fi
+		parent_dir=$(dirname "$path")
+		if [[ -n "$parent_dir" ]] && [[ ! -d "$parent_dir" ]]; then
+			mkdir -p "$parent_dir"
+		fi
+		touch "$path"
+	done
+}
+
+if [ $# -eq 0 ]; then
+	echo "No arguments provided"
+	echo "Usage: ff [path file or folder]"
+	echo "For more information, run: ff --help"
+	exit 1
+fi
+
+if [ "$1" == "--help" ]; then
+	echo "Usage:    ff [path file or folder]"
+	echo "Examples: - Single file:
+              ff file
+          - Single directory:
+              ff dir/
+          - Multiple files:
+              ff file1 file2 file3
+          - Multiple directories:
+              ff dir1/ dir2/ dir3/
+          - File in a directory
+              ff dir/file
+          - Directory in a directory
+              ff dir1/dir2/
+          - Multiple files in multiple directories
+              ff dir1/dir2/file1 dir3/file2
+          - If your shell supprts brace expansion e.g bash, zsh, fish
+              ff dir1/{dir2/{file1,file2}.txt,dir3/file3.txt}"
+	exit 0
+fi
+
+createObjects "$@"
+
+# Only print created files if executing directly from the command line.
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+	listObjects "$@"
+fi
