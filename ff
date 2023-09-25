@@ -4,7 +4,10 @@
 #                       █▀▀ ▄▀█ █▀ ▀█▀ █▀▀ █ █   █▀▀ █▀
 #                       █▀  █▀█ ▄█  █  █▀  █ █▄▄ ██▄ ▄█
 #
-# Usage:        ff [path file or folder]
+# Usage:        ff [option] [path file or folder]
+#
+#               --help : prints usage info
+#               -v     : prints created files
 #
 # Description:  Bash script which is a combination of 'mkdir' and 'touch'.
 #               It can create directory structures and files simultaneously
@@ -98,7 +101,7 @@ fi
 
 createObjects "$@"
 
-# Only print created files if executing directly from the command line.
-if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+# Only print created files if "-v" (verbose) is the first argument
+if [[ "$1" == "-v" ]]; then
 	listObjects "$@"
 fi

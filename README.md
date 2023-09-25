@@ -14,6 +14,8 @@ ff is a bash script which is a combination of 'mkdir' and 'touch'. It can create
 
 ```bash
   ff [path file or folder]
+ --help : prints usage info
+ -v     : prints created files
 ```
 
 ## Examples
