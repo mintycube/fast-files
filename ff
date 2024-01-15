@@ -40,6 +40,9 @@ listObjects() {
 	unique_names=()
 
 	for arg in "$@"; do
+    if [[ "$arg" == "-v" ]]; then
+      continue
+    fi
 		name="${arg%%/*}"
 		if [ -n "$name" ]; then
 			if [[ ! " ${unique_names[*]} " =~ $name ]]; then
@@ -60,6 +63,9 @@ listObjects() {
 # Function to create directory structures and files
 createObjects() {
 	for path in "$@"; do
+    if [[ "$path" == "-v" ]]; then
+      continue
+    fi
 		if [[ "$path" == */ ]]; then
 			mkdir -p "$path"
 		fi
