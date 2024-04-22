@@ -15,7 +15,6 @@ ff is a bash script which is a combination of 'mkdir' and 'touch'. It can create
 ```bash
   ff [path file or folder]
  --help : prints usage info
- -v     : prints created files
 ```
 
 ## Examples
@@ -27,11 +26,8 @@ ff file
 ```
 
 ```
-  file
-
+ file
 ```
-
----
 
 ### Single directory
 
@@ -40,10 +36,8 @@ ff dir/
 ```
 
 ```
-   dir
+ dir
 ```
-
----
 
 ### Multiple files
 
@@ -52,12 +46,10 @@ ff file1 file2 file3
 ```
 
 ```
-  file1
-  file2
-  file3
+ file1
+ file2
+ file3
 ```
-
----
 
 ### Multiple directories
 
@@ -66,12 +58,10 @@ ff dir1/ dir2/ dir3/
 ```
 
 ```
-   dir1
-   dir2
-   dir3
+ dir1
+ dir2
+ dir3
 ```
-
----
 
 ### File in a directory
 
@@ -80,11 +70,9 @@ ff dir/file
 ```
 
 ```
-  dir
-└──   file
+dir
+└── file
 ```
-
----
 
 ### Directory in a directory
 
@@ -93,11 +81,9 @@ ff dir1/dir2/
 ```
 
 ```
-  dir1
-└──    dir2
+dir1
+└── dir2
 ```
-
----
 
 ### Multiple files in multiple directories
 
@@ -106,31 +92,27 @@ ff dir1/dir2/file1 dir3/file2
 ```
 
 ```
-  dir1
-└──   dir2
-   └──   file1
-  dir3
-└──   file2
+dir1
+└── dir2
+    └── file1
+dir3
+└── file2
 ```
 
----
-
-### If your shell supprts brace expansion e.g bash, zsh, fish
+### If your shell supports brace expansion e.g bash, zsh, fish
 
 ```bash
 ff dir1/{dir2/{file1,file2}.txt,dir3/file3.txt}
 ```
 
 ```
-  dir1
-├──   dir2
-│  ├──   file1.txt
-│  └──   file2.txt
-└──   dir3
-   └──   file3.txt
+dir1
+├── dir2
+│   ├── file1.txt
+│   └── file2.txt
+└── dir3
+    └── file3.txt
 ```
-
----
 
 ## Related Projects
 
